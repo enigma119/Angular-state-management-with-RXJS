@@ -1,7 +1,8 @@
 import { Route } from '@angular/router';
 import { CanDeactivateContactsDetails } from 'app/modules/contacts/contacts.guards';
-import { ContactsContactResolver, ContactsCountriesResolver, ContactsResolver, ContactsTagsResolver } from 'app/modules/contacts/contacts.resolvers';
+import { ContactsCountriesResolver, ContactsResolver, ContactsTagsResolver } from 'app/modules/contacts/contacts.resolvers';
 import { ContactsWithoutStateManagementComponent } from './contacts.component';
+import { ContactsContactWithoutStateManagementResolver } from './contacts.resolvers';
 import { ContactsDetailsWithoutStateManagementComponent } from './details/details.component';
 import { ContactsListWithoutStateManagementComponent } from './list/list.component';
 
@@ -25,7 +26,7 @@ export const contactsWithoutStateManagementRoutes: Route[] = [
                         path         : ':id',
                         component    : ContactsDetailsWithoutStateManagementComponent,
                         resolve      : {
-                            contact  : ContactsContactResolver,
+                            contact  : ContactsContactWithoutStateManagementResolver,
                             countries: ContactsCountriesResolver
                         },
                         canDeactivate: [CanDeactivateContactsDetails]

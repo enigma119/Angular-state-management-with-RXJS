@@ -109,13 +109,43 @@ export class ContactsService
      */
     getContactById(id: string): Observable<Contact>
     {
-        return this._httpClient.get<Contact>(`${environment.apiUrl}/contacts/${id}`).pipe(
-            tap((contact) => {
-                console.log('Get contact By ID =====>', contact)
+        return this._contacts.pipe(
+            take(1),
+            map((contacts) => {
+
+                // Find the contact
+                const contact = contacts.find(item => item.id === id) || null;
+
+                // Update the contact
                 this._contact.next(contact);
+
+                // Return the contact
+                return contact;
+            }),
+            switchMap((contact) => {
+
+                if ( !contact )
+                {
+                    return throwError('Could not found contact with id of ' + id + '!');
+                }
+
+                return of(contact);
             })
         );
     }
+
+    /**
+     * Get contact by id
+     */
+     getContactByIdClassicaly(id: string): Observable<Contact>
+     {
+         return this._httpClient.get<Contact>(`${environment.apiUrl}/contacts/${id}`).pipe(
+             tap((contact) => {
+                 console.log('Get contact By ID =====>', contact)
+                 this._contact.next(contact);
+             })
+         );
+     }
 
     /**
      * Create contact
